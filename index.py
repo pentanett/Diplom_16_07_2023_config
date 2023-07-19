@@ -16,11 +16,15 @@ START_COMMAND = "поиск"
 CONTINUE_COMMAND = "/далее"
 
 
-def send_msg(user_id, message):
-    vk.method("messages.send", {"user_id": user_id, "message": message, "random_id": randrange(10 ** 7), })
+# def send_msg(user_id, message):
+#     vk.method("messages.send", {"user_id": user_id, "message": message, "random_id": randrange(10 ** 7), })
+#
+#
+# def send_msg_with_photo(user_id, message, photo_id):
+#     vk.method("messages.send", {"user_id": user_id, "message": message, "random_id": randrange(10 ** 7),
+#                                 "attachment": f"photo{photo_id}", })
 
-
-def send_msg_with_photo(user_id, message, photo_id):
+def send_msg(user_id, message, photo_id):
     vk.method("messages.send", {"user_id": user_id, "message": message, "random_id": randrange(10 ** 7),
                                 "attachment": f"photo{photo_id}", })
 
@@ -54,7 +58,7 @@ def get_user_popular_photos_by_user_id(user_id):
 
 
 def search_possible_couples_for_user(user_id):
-    global POSSIBLE_COUPLES_FOR_CLIENTS
+    POSSIBLE_COUPLES_FOR_CLIENTS
     user_data = get_user_data_by_id(user_id)
     request_data = {"count": 100, "status": 6}
     if user_data.get("age") is not None:
@@ -78,7 +82,7 @@ def search_possible_couples_for_user(user_id):
 
 
 def find_couple_for_user(user_id):
-    global POSSIBLE_COUPLES_FOR_CLIENTS
+    POSSIBLE_COUPLES_FOR_CLIENTS
     possible_couples = POSSIBLE_COUPLES_FOR_CLIENTS.get(user_id)
     if possible_couples is not None and len(possible_couples) > 0:
         possible_couple_id = possible_couples.pop(0)
@@ -134,7 +138,7 @@ for event in long_poll.listen():
                                  f"Мы подобрали вам пару! {get_domain_by_user_id(couple)}")
                         couple_photos = get_user_popular_photos_by_user_id(couple)
                         for photo in couple_photos:
-                            send_msg_with_photo(event.user_id, "Фото", photo.get("photo_id"))
+                            send_msg(event.user_id, "Фото", photo.get("photo_id"))
                         send_msg(event.user_id,
                                  f"Чтобы показать следующую анкету введите "
                                  f"{CONTINUE_COMMAND}")
